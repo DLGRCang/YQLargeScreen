@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大屏</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/echarts.js"></script>
+    <link rel="stylesheet" href="./css/index.css">    
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <div>
+                <p>时间：{{setTime1}}</p>
+                <p>{{setTime2}}</p>
+            </div>
+            <div>
+                <p>数据更新于：{{setTime3}}</p>
+                <p>{{setTime4}}</p>
+            </div>
+        </div>
+
+        <div class="box dj">
+            <div class="box_left">
+                <div class="box_left_top">
+                    <div class="title">今日疫情数据</div>
+                    <div class="box_left_top_box">
+                        <div class="box_left_top_box_body dw">
+                            <div class="box_title">
+                                <p>全国疫情</p>
+                                <p class="lan"></p>
+                            </div>
+                            <div class="scrollBar">
+                                <div :class="[{'animateup': mateup}]"  style="position: absolute;">
+                                    <p v-for="(item,i) in list" :key="i">{{item.msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_left_top_box_body dw">
+                            <div class="box_title">
+                                <p>全市疫情</p>
+                                <p class="lan"></p>
+                            </div>
+                            <div class="scrollBar">
+                                <div :class="[{'animateup': mateup}]"  style="position: absolute;">
+                                    <p v-for="(item,i) in list" :key="i">{{item.msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_left_top_box_body dw">
+                            <div class="box_title">
+                                <p>全旗疫情</p>
+                                <p class="lan"></p>
+                            </div>
+                            <div class="scrollBar">
+                                <div :class="[{'animateup': mateup}]"  style="position: absolute;">
+                                    <p v-for="(item,i) in list" :key="i">{{item.msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_left_body dw">
+                    <div class="title">疫苗接种</div>
+                    <div class="box_left_body_box dw">
+                        <div class="box_left_body_box_top dj">
+                            <div>
+                                <p>接种总数 0 </p>
+                                <p>人</p>
+                            </div>
+                            <div>
+                                <p>实有人数 0 </p>
+                                <p>万人</p>
+                            </div>
+                        </div>
+                        <div class="box_left_body_box_bot">
+                            <div class="box_left_body_box_bot1 dj">
+                                <div>全程接种率</div>
+                                <div class="tongji dj">
+                                    <p v-for="(item,i) in 25">
+                                        <img src="./img/huangse.png" alt="" v-if="((i+1)*4) <= msg1" class="img1">
+                                        <img src="./img/lanse.png" alt="" v-else class="img2">
+                                    </p>
+                                </div>
+                                <div>{{msg1}}%</div>
+                            </div>
+                            <div class="box_left_body_box_bot1 dj" style="margin-top: 19px;">
+                                <div>加强针接种率</div>
+                                <div class="tongji dj">
+                                    <p v-for="(item,i) in 25">
+                                        <img src="./img/huangse.png" alt="" v-if="((i+1)*4) <= msg2" class="img1">
+                                        <img src="./img/lanse.png" alt="" v-else class="img2">
+                                    </p>
+                                </div>
+                                <div>{{msg2}}%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_left_bot dw">
+                    <div class="title">物资统计</div>
+                    <div class="box_left_top_box">
+                        <div class="box_left_top_box_body dw">
+                            <div class="box_title">
+                                <p>医疗物资</p>
+                                <p class="huang"></p>
+                            </div>
+                            <div class="scrollBar">
+                                <div :class="[{'animateup': mateup}]"  style="position: absolute;">
+                                    <p v-for="(item,i) in list1" :key="i">{{item.msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_left_top_box_body dw">
+                            <div class="box_title">
+                                <p>应急物资</p>
+                                <p class="huang"></p>
+                            </div>
+                            <div class="scrollBar">
+                                <div :class="[{'animateup': mateup}]"  style="position: absolute;">
+                                    <p v-for="(item,i) in list2" :key="i">{{item.msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_left_top_box_body dw">
+                            <div class="box_title">
+                                <p>生活物资</p>
+                                <p class="huang"></p>
+                            </div>
+                            <div class="scrollBar">
+                                <div :class="[{'animateup': mateup}]"  style="position: absolute;">
+                                    <p v-for="(item,i) in list3" :key="i">{{item.msg}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box_body">
+                <div class="box_body_top">
+                    <div class="box_body_top_box">
+                        <div>有序流动</div>
+                        <div>
+                            <p style="border: 2px solid #FDE517;color: #fff;" v-for="(item) in num">{{item}}</p>
+                        </div>
+                        <div style="color: #FDE517;">人次</div>
+                    </div>
+                    <div class="box_body_top_box">
+                        <div>阳性患者</div>
+                        <div>
+                            <p style="border: 2px solid #E5004F;color: #fff;" v-for="(item) in num2">{{item}}</p>
+                        </div>
+                        <div style="color: #E5004F;">人次</div>
+                    </div>
+                    <div class="box_body_top_box">
+                        <div>密切接触者</div>
+                        <div>
+                            <p style="border: 2px solid rgb(58,169,255);color: #fff;" v-for="(item) in num">{{item}}</p>
+                        </div>
+                        <div style="color: rgb(58,169,255);">人次</div>
+                    </div>
+                    <div class="box_body_top_box">
+                        <div>次密接者</div>
+                        <div>
+                            <p style="border: 2px solid rgb(58,169,255);color: #fff;" v-for="(item) in num">{{item}}</p>
+                        </div>
+                        <div style="color: rgb(58,169,255);">人次</div>
+                    </div>
+                </div>
+                <div class="box_body_box_bot dj">
+                    <div class="box_body_box_bot_left">
+                        <div class="box_body_box dj">
+                            <div class="box_body_box_body dw">
+                                <div class="box_body_box_body_box dw">
+                                    <div class="box_body_box_body_box_top">推送核查</div>
+                                    <div id="main" class="box_body_box_body_box_box"></div>
+                                    <div class="box_body_box_body_box_bot">总计<span>0</span> <span>人</span></div>
+                                </div>
+                                <div class="box_body_box_body_box dw">
+                                    <div class="box_body_box_body_box_top">疾控上报</div>
+                                    <div id="main3" class="box_body_box_body_box_box"></div>
+                                    <div class="box_body_box_body_box_bot">总计<span>0</span> <span>人</span></div>
+                                </div>
+
+                            </div>
+                            <div class="box_body_box_body dw">
+                                <div class="box_body_box_body_box dw">
+                                    <div class="box_body_box_body_box_top">本地摸排</div>
+                                    <div id="main2" class="box_body_box_body_box_box"></div>
+                                    <div class="box_body_box_body_box_bot">总计<span>0</span> <span>人</span></div>
+                                </div>
+                                <div class="box_body_box_body_box dw">
+                                    <div class="box_body_box_body_box_top">场所上报</div>
+                                    <div id="main4" class="box_body_box_body_box_box"></div>
+                                    <div class="box_body_box_body_box_bot">总计<span>0</span> <span>人</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box_body_box_bot_body">
+
+                    </div>
+                    <div class="box_body_box_bot_right">
+                        <div class="box_body_box_bot_right_top dj">
+                            <div class="box_body_box_bot_right_top_box dw">
+                                <div class="box_body_box_body_box_top">密切人员总数</div>
+                                <div class="box_body_box_bot_right_top_box_box">
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>未处理密接</p>
+                                            <img src="./img/xiaolan.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>已处理密接</p>
+                                            <img src="./img/xiaolan.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>已确认密接</p>
+                                            <img src="./img/xiaohuang.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>已排除密接</p>
+                                            <img src="./img/xiaohuang.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box_right_body_box_blue dj box_right_body_box">
+                                    <div>转运人员</div>
+                                    <div class="dj">
+                                        <p>待转运 <span>0</span></p>
+                                        <p>已转运 <span>0</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box_body_box_bot_right_top_box dw">
+                                <div class="box_body_box_body_box_top">次密切人员总数</div>
+                                <div class="box_body_box_bot_right_top_box_box">
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>未处理密接</p>
+                                            <img src="./img/xiaolan.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>已处理密接</p>
+                                            <img src="./img/xiaolan.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>已确认密接</p>
+                                            <img src="./img/xiaohuang.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                    <div class="box_body_box_bot_right_top_box_box_for">
+                                        <div class="box_body_box_bot_right_top_box_box_for_top">
+                                            <p>已排除密接</p>
+                                            <img src="./img/xiaohuang.png" alt="">
+                                        </div>
+                                        <div class="box_body_box_bot_right_top_box_box_for_bot">
+                                            <span>0</span>
+                                            <span>人</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="box_right_body_box_yellow dj box_right_body_box">
+                                    <div>转运人员</div>
+                                    <div class="dj">
+                                        <p>待转运 <span>0</span></p>
+                                        <p>已转运 <span>0</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_body_box_bot_right_bot">
+                            <div class="box_body_box_body_box_top">场所数据统计</div>
+                            <div class="box_body_box_bot_right_bot_bot">
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>累计通过数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{pass}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>累计驳回数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{unpass}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>累计劝返数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{back}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>累计隔离数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{stop}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="box_body_box_bot_right_bot_bot">
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>今日通过数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{todayPass}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>今日驳回数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{todayUnpass}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>今日劝返数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{todayBack}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                                <div class="box_body_box_bot_right_bot_bot_box">
+                                    <div class="box_body_box_bot_right_bot_bot_box_top">
+                                        <p>今日隔离数量</p>
+                                        <img src="./img/xiaohuang.png" alt="">
+                                    </div>
+                                    <div class="box_body_box_bot_right_bot_bot_box_bot">
+                                        <span>{{todayStop}}</span>
+                                        <span>个</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+<!--                <div class="box_body_bot dj">-->
+<!--                    <div class="box_body_bot_box">-->
+<!--                        <p>场地总数</p>-->
+<!--                        <p>119974 <span>个</span></p>-->
+<!--                        <img src="./img/jiao.png" alt="" class="image1">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image2">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image3">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image4">-->
+<!--                    </div>-->
+<!--                    <div class="box_body_bot_box">-->
+<!--                        <p>用户总数</p>-->
+<!--                        <p>119974 <span>个</span></p>-->
+<!--                        <img src="./img/jiao.png" alt="" class="image1">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image2">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image3">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image4">-->
+<!--                    </div>-->
+<!--                    <div class="box_body_bot_box1 dw">-->
+<!--                        <div>今日排查23 <span>人</span></div>-->
+<!--                        <div>-->
+<!--                            <p>已完成9<span>人</span></p>-->
+<!--                            <p>已完成9<span>人</span></p>-->
+<!--                            <p>已完成9<span>人</span></p>-->
+<!--                        </div>-->
+<!--                        <img src="./img/jiao.png" alt="" class="image1">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image2">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image3">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image4">-->
+<!--                    </div>-->
+<!--                    <div class="box_body_bot_box1">-->
+<!--                        <div>今日排查23 <span>人</span></div>-->
+<!--                        <div>-->
+<!--                            <p>已完成9<span>人</span></p>-->
+<!--                            <p>已完成9<span>人</span></p>-->
+<!--                            <p>已完成9<span>人</span></p>-->
+<!--                        </div>-->
+<!--                        <img src="./img/jiao.png" alt="" class="image1">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image2">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image3">-->
+<!--                        <img src="./img/jiao.png" alt="" class="image4">-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+            <div class="box_right dw">
+                <div class="box_right_top dw">
+                    <div class="title">管控人员</div>
+                    <div class="box_right_top_box dw">
+                        <div class="box_right_top_box_top dw">
+                            <div class="box_title">
+                                <p>集中隔离（现有：0<span>人</span> 今日新增0<span>人</span>）</p>
+                                <p class="lan"></p>
+                            </div>
+                            <div class="box_right_top_box_top_body dj">
+                                <div class="scrollBar2">
+                                    <div :class="[{'animateup': mateup}]">
+                                        <p v-for="(item,i) in list4" :key="i"><span>{{item.msg}}</span><span>0人</span></p>
+                                    </div>
+                                </div>
+                                <div class="scrollBar2">
+                                    <div :class="[{'animateup': mateup}]">
+                                        <p v-for="(item,i) in list5" :key="i"><span>{{item.msg}}</span><span>0人</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_right_top_box_top dw">
+                            <div class="box_title">
+                                <p>居家隔离（现有：0<span>人</span> 今日新增0<span>人</span>）</p>
+                                <p class="lan"></p>
+                            </div>
+                            <div class="box_right_top_box_top_body dj">
+                                <div class="scrollBar2">
+                                    <div :class="[{'animateup': mateup}]">
+                                        <p v-for="(item,i) in list4" :key="i"><span>{{item.msg}}</span><span>0人</span></p>
+                                    </div>
+                                </div>
+                                <div class="scrollBar2">
+                                    <div :class="[{'animateup': mateup}]">
+                                        <p v-for="(item,i) in list6" :key="i"><span>{{item.msg}}</span><span>0人</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box_right_top_box_top dw">
+                            <div class="box_title">
+                                <p>健康监测（现有：0<span>人</span> 今日新增0<span>人</span>）</p>
+                                <p class="lan"></p>
+                            </div>
+                            <div class="box_right_top_box_top_body dj">
+                                <div class="scrollBar2">
+                                    <div>
+                                        <p v-for="(item,i) in list7" :key="i"><span>{{item.msg}}</span><span>0人</span></p>
+                                    </div>
+                                </div>
+                                <div class="scrollBar2">
+                                    <div>
+                                        <p v-for="(item,i) in list8" :key="i"><span>{{item.msg}}</span><span>0人</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_right_body dw">
+                    <div class="title">核酸检验</div>
+                    <div class="box_right_body_box dw">
+                        <div class="box_right_body_box_blue dj">
+                            <div>今日检验 0 <span>份</span></div>
+                            <div class="dj">
+                                <p>阴性 <span>0</span></p>
+                                <p>阳性 <span>0</span></p>
+                                <p>未出 <span>0</span></p>
+                            </div>
+                        </div>
+                        <div class="box_right_body_box_yellow dj">
+                            <div>累计检验 0 <span>份</span></div>
+                            <div class="dj">
+                                <p>阴性 <span>0</span></p>
+                                <p>阳性 <span>0</span></p>
+                                <p>未出 <span>0</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_right_bot dw">
+                    <div class="title">涉外人员</div>
+                    <div class="box_right_bot_box dj">
+                        <div class="box_right_bot_box_left dw">
+                            <div class="dj">
+                                <span>今日</span>
+                                <span>{{msg2}}人</span>
+                            </div>
+                            <div class="dj">
+                                <span>现有</span>
+                                <span>0人</span>
+                            </div>
+                        </div>
+                        <div class="box_right_bot_box_right">
+                            <div class="tongji dj">
+                                <p v-for="(item,i) in 20">
+                                    <img src="./img/huangse.png" alt="" v-if="((i+1)*5) <= msg2" class="img1">
+                                    <img src="./img/lanse.png" alt="" v-else class="img2">
+                                </p>
+                            </div>
+                            <div>{{msg2}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="container"></div>
+    <script
+            charset="utf-8"
+            src="./js/tencentMap.js"
+    ></script>
+    <script type="text/javascript">
+        let radiationCircleData = []
+        let radiationCircleData1 = []
+        let ajax = new XMLHttpRequest()
+        ajax.open('GET','https://www.yjhlcity.com/epidemiccontrol/app/shop/alllistrelease',true)
+        ajax.send()
+        ajax.onreadystatechange = () =>{
+            if(ajax.readyState == 4 && ajax.status == 200){
+                let data = JSON.parse(ajax.response)
+
+                for(let i=0;i<data.length;i++){
+                    let centers = new TMap.LatLng(data[i].shopLatitude, data[i].shopLongitude)
+                    if(i == 0||i == 1){
+                        radiationCircleData.push(
+                            {
+                                radius: 2000, // 杈 愬皠鍦堝崐寰勶紝鍗曚綅涓虹背
+                                center: centers,
+                                styleId: "style2",
+                            }
+                        )
+                        radiationCircleData1.push(
+                            {
+                                lat: data[i].shopLatitude,
+                                lng: data[i].shopLongitude,
+                                styleId: "style2"
+                            }
+                        )
+
+                    }else {
+                        radiationCircleData.push(
+                            {
+                                radius: 800, // 杈愬皠鍦堝崐寰勶紝鍗曚綅涓虹背
+                                center: centers,
+                                styleId: "style1",
+                            }
+                        )
+                        radiationCircleData1.push(
+                            {
+                                lat: data[i].shopLatitude,
+                                lng: data[i].shopLongitude,
+                                styleId: "style2"
+                            }
+                        )
+                    }
+                }
+
+                initMap(radiationCircleData,radiationCircleData1)
+            }
+        }
+
+
+        function initMap(data1,data2) {
+            var map = new TMap.Map("container", {
+                zoom: 11.5, //设置地图缩放级别
+                center: new TMap.LatLng(39.293756179265966, 109.83644465042843), //设置地图中心点坐标
+                mapStyleId: "style4", //个性化样式2
+                renderOptions: {
+                    enableBloom: true, //泛光
+                },
+            });
+            //初始化辐射圈
+            var radiationCircle = new TMap.visualization.Radiation({
+                styles: {
+                    style1: {
+                        fillColor: "rgba(254,43,0,0.9)", //辐射圈填充颜色
+                    },
+                    style2: {
+                        fillColor: "rgba(254,43,0,0.9)", //辐射圈填充颜色
+                    },
+                },
+                processAnimation: {
+                    duration:2000, //辐射圈半径从0到最大半径的时长，单位为ms
+                },
+            })
+                .addTo(map)
+            radiationCircle.setData(data1);
+
+            //初始化散点图并添加至map图层
+            var dot = new TMap.visualization.Dot({
+                styles: {
+                    style1: {
+                        radius: 2, //圆形半径
+                    },
+                    style2: {
+                        fillColor: "rgba(254,43,0,1)", //圆形填充颜色
+                        radius: 3, //圆形半径
+                    },
+                },
+                enableBloom: true, // 泛光
+            })
+                .addTo(map)
+            dot.setData(data2); //设置数据
+        }
+
+        var timeIn = new Date();
+
+
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                mateup: false,
+                list:[{msg:"现有确诊：0"},{msg:"无症状：0"},{msg:"现有疑似：0"},{msg:"现有重症：0"},{msg:"累计确诊：0"},{msg:"境外输入：0"},{msg:"累计治愈：0"},{msg:"累计死亡：0"}],
+                list1:[{msg:"一次性帽子：0"},{msg:"医用手套：0"},{msg:"鞋套：0"},{msg:"医用防护服：0"},{msg:"医用护目镜：0"}],
+                list2:[{msg:"折叠床：0"},{msg:"棉被：0"},{msg:"面褥：0"},{msg:"雨衣：0"},{msg:"雨鞋：0"},{msg:"救生衣：0"},{msg:"编织袋：0"}],
+                list3:[{msg:"食用油：0"},{msg:"蔬菜：0"},{msg:"水果：0"},{msg:"猪肉：0"},{msg:"牛肉：0"},{msg:"羊肉：0"},{msg:"鸡蛋：0"}],
+                list4:[{msg:"高风险地区来返：0"},{msg:"中风险地区来返：0"},{msg:"密切接触者：0"},{msg:"次密接触者：0"},{msg:"境外返回：0"}],
+                list5:[{msg:"隔离酒店名称：0"}],
+                list6:[{msg:"居家隔离小区名称：0"}],
+                list7:[{msg:"现有监测：0"}],
+                list8:[{msg:"今日监测：0"}],
+                msg1:0,
+                msg2:0,
+                num:0,
+                num2:0,
+                setTime1:"",
+                setTime2:"",
+                setTime3:"",
+                setTime4:"",
+                pass:null,
+                unpass:"",
+                back:"",
+                stop:"",
+                todayPass:null,
+                todayUnpass:"",
+                todayBack:"",
+                todayStop:"",
+            },
+            created:function() {
+                this.interval = setInterval(this.scrollanimate, 2000); 
+                let num = "0"
+                let num2 = "0"
+                this.num = num.split('')
+                this.num2 = num2.split('')
+                this.statuscountrelease()
+                this.statuscountreleaseToday()
+                this.setTime3 = new Date().getFullYear() + '.' +new Date().getMonth() + 1+'.'+this.timeReturn(new Date().getDate()),
+                this.setTime4 =  this.timeReturn(new Date().getHours()) + ':'+this.timeReturn(new Date().getMinutes())+ ':'+this.timeReturn(new Date().getSeconds())
+                setInterval(()=>{
+                    var time = new Date();
+                    this.setTime1 = time.getFullYear() + '.' +time.getMonth() + 1+'.'+this.timeReturn(time.getDate())
+                    this.setTime2 = this.timeReturn(time.getHours()) + ':'+this.timeReturn(time.getMinutes())+ ':'+this.timeReturn(time.getSeconds())
+                },1000)
+            },
+            mounted:function(){
+                this.main1()
+                this.main2()
+                this.main3()
+                this.main4()
+            },
+            //destroyed() { clearInterval(this.interval)},
+            methods: {
+               scrollanimate() { // 动画滚动
+            　　this.mateup = true;
+                setTimeout(() => {
+                    this.list.push(this.list[0]);
+                    this.list.shift();
+                    this.list1.push(this.list1[0]);
+                    this.list1.shift();
+                    this.list2.push(this.list2[0]);
+                    this.list2.shift();
+                    this.list3.push(this.list3[0]);
+                    this.list3.shift();
+                    this.list4.push(this.list4[0]);
+                    this.list4.shift();
+                    this.list5.push(this.list5[0]);
+                    this.list5.shift();
+                    this.list6.push(this.list6[0]);
+                    this.list6.shift();
+                    this.mateup = false
+            　　　　}, 1000)
+            　　},
+                statuscountrelease(){
+                    let ajax1 = new XMLHttpRequest()
+                    ajax1.open('GET','https://www.yjhlcity.com/epidemiccontrol/app/shop-user-record/statuscountrelease',true)
+                    ajax1.send()
+                    ajax1.onreadystatechange = () =>{
+                        if(ajax1.readyState == 4 && ajax1.status == 200){
+                            let data = JSON.parse(ajax1.response)
+                            this.pass = Number(data.data.data.pass)+Number(data.data.data.overtime)
+                            this.unpass = data.data.data.unpass
+                            this.back = data.data.data.back
+                            this.stop = data.data.data.stop
+                            
+                        }
+                    }
+                },
+
+                statuscountreleaseToday(){
+                    let time = new Date().getFullYear() + '-' +new Date().getMonth() + 1+'-'+this.timeReturn(new Date().getDate())
+                    let ajax1 = new XMLHttpRequest()
+                    ajax1.open('GET','https://www.yjhlcity.com/epidemiccontrol/app/shop-user-record/statuscountrelease?startTime='+time+"&endTime="+time,true)
+                    ajax1.send()
+                    ajax1.onreadystatechange = () =>{
+                        if(ajax1.readyState == 4 && ajax1.status == 200){
+                            let data = JSON.parse(ajax1.response)
+                            this.todayPass = Number(data.data.data.pass)+Number(data.data.data.overtime)
+                            this.todayUnpass = data.data.data.unpass
+                            this.todayBack = data.data.data.back
+                            this.todayStop = data.data.data.stop
+
+                        }
+                    }
+                },
+
+                timeReturn(time){
+                   return time < 9 ? '0'+time : time
+                },
+
+
+                main1(){
+                    var myChart = echarts.init(document.getElementById('main'));
+                    myChart.setOption({
+                        xAxis: {
+                            type: 'category',
+                            data: ['12-08', '12-08', '12-08', '12-08', '12-08', '12-08', '12-08'],
+                            axisLine: {
+                            lineStyle: {
+                                type: 'solid',
+                                color: '#fff',//左边线的颜色
+                                width:'1'//坐标线的宽度
+                            }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: '#fff',//坐标值得具体的颜色
+                                    fontSize:13,
+                                }
+                            }
+                        },
+                        yAxis: {
+                            show:false,
+                        },
+                        series: [
+                            {
+                                data: [0, 932, 901, 934, 1290, 1330, 1320],
+                                type: 'line',
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle:{
+                                    normal:{
+                                        color:"#FDE517"
+                                    }
+                                }
+                                
+                            }
+                        ]
+                    });
+                },
+
+                main2(){
+                    var myChart = echarts.init(document.getElementById('main2'));
+                    myChart.setOption({
+                        xAxis: {
+                            type: 'category',
+                            data: ['12-08', '12-08', '12-08', '12-08', '12-08', '12-08', '12-08'],
+                            axisLine: {
+                            lineStyle: {
+                                type: 'solid',
+                                color: '#fff',//左边线的颜色
+                                width:'1'//坐标线的宽度
+                            }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: '#fff',//坐标值得具体的颜色
+                                    fontSize:13,
+                                }
+                            }
+                        },
+                        yAxis: {
+                            show:false,
+                        },
+                        series: [
+                            {
+                                data: [0, 932, 901, 934, 1290, 1330, 1320],
+                                type: 'line',
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle:{
+                                    normal:{
+                                        color:"#22AC38"
+                                    }
+                                }
+                                
+                            }
+                        ]
+                    });
+                },
+                main3(){
+                    var myChart = echarts.init(document.getElementById('main3'));
+                    myChart.setOption({
+                        xAxis: {
+                            type: 'category',
+                            data: ['12-08', '12-08', '12-08', '12-08', '12-08', '12-08', '12-08'],
+                            axisLine: {
+                            lineStyle: {
+                                type: 'solid',
+                                color: '#fff',//左边线的颜色
+                                width:'1'//坐标线的宽度
+                            }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: '#fff',//坐标值得具体的颜色
+                                    fontSize:13,
+                                }
+                            }
+                        },
+                        yAxis: {
+                            show:false,
+                        },
+                        series: [
+                            {
+                                data: [0, 932, 901, 934, 1290, 1330, 1320],
+                                type: 'line',
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle:{
+                                    normal:{
+                                        color:"#E5004F"
+                                    }
+                                }
+                                
+                            }
+                        ]
+                    });
+                },
+                main4(){
+                    var myChart = echarts.init(document.getElementById('main4'));
+                    myChart.setOption({
+                        xAxis: {
+                            type: 'category',
+                            data: ['12-08', '12-08', '12-08', '12-08', '12-08', '12-08', '12-08'],
+                            axisLine: {
+                            lineStyle: {
+                                type: 'solid',
+                                color: '#fff',//左边线的颜色
+                                width:'1'//坐标线的宽度
+                            }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: '#fff',//坐标值得具体的颜色
+                                    fontSize:13,
+                                }
+                            }
+                        },
+                        yAxis: {
+                            show:false,
+                        },
+                        series: [
+                            {
+                                data: [0, 932, 901, 934, 1290, 1330, 1320],
+                                type: 'line',
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle:{
+                                    normal:{
+                                        color:"#FDE517"
+                                    }
+                                }
+                                
+                            }
+                        ]
+                    });
+                }
+
+            }
+        })
+    </script>
+</body>
+</html>
